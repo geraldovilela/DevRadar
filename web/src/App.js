@@ -31,13 +31,14 @@ function App() {
             <div className="input-block">
               <label htmlFor="latitude">Latitude</label>
               <input name="latitude" id="latitude" required></input>
-
-              <div className="input-block">
-                <label htmlFor="longitude">Longitude</label>
-                <input name="longitude" id="longitude" required></input>
-
-              </div>
             </div>
+
+            <div className="input-block">
+              <label htmlFor="longitude">Longitude</label>
+              <input name="longitude" id="longitude" required></input>
+
+            </div>
+
           </div>
 
           <button type="submit">Salvar</button>
@@ -46,7 +47,21 @@ function App() {
       </aside>
 
       <main>
+        <ul>
+          <li className="dev-item">
+            <header>
+              <img src="https://avatars1.githubusercontent.com/u/53988477?s=400&u=9e1140896c202ef0d6c8c97d2affcd05f529fee5&v=4" alt="Geraldo Vilela"></img>
+                <div className="user-info">
+                  <strong>Geraldo Vilela</strong>
+                  <span>ReactJS, React Native, Node.js</span>
 
+                </div>
+              
+            </header>
+              <p>atualmente estudante de S.I, focado em aprender a usar JS, Node.JS e React.</p>
+              <a href="https://github.com/geraldovilela">Acessar Perfil</a>
+          </li>
+        </ul>
       </main>
     </div>
 
