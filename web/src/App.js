@@ -1,4 +1,5 @@
 import React, {useState,useEffect} from 'react';
+import api from './services/api'
 import './global.css'
 import './App.css'
 import './sideBar.css'
@@ -9,6 +10,7 @@ import './main.css'
 //Estado: Informações mantidas pelo compoente Verificar Imutabilidade
 
 function App() {
+  const [devs, setDevs] = useState([]);
   const [latitude, setLatitude] = useState('')
   const [longitude, setLongitude] = useState('')
   const [techs, setTechs] = useState('')
@@ -31,16 +33,39 @@ function App() {
     )
   },[])
 
+  useEffect(()=>{
+    async function loadDevs() {
+      const response =  await api.get('./devs')
+
+      setDevs(response.data);
+
+    }
+    loadDevs();
+  },[])
+
   async function handleAddDev (e){
     e.preventDefault();
+
+    const response = await api.post('./devs',{
+    github_username,
+    techs,
+    latitude,
+    longitude})
+    
+    setgithub_username('');
+    setTechs('');
+
+    setDevs([...devs, response.data]);
+
   }
 
+  
 
   return (
     <div id="app">
       <aside>
         <strong>Cadastrar</strong>
-        <form>
+        <form onSubmit={handleAddDev}>
           <div className="input-block">
             <label htmlFor="github_username"> Usuário do GitHub</label>
             <input 
@@ -84,58 +109,22 @@ function App() {
 
       <main>
         <ul>
-          <li className="dev-item">
+          {devs.map(dev => (
+          <li key={dev._id} className="dev-item">
             <header>
-              <img src="https://avatars1.githubusercontent.com/u/53988477?s=400&u=9e1140896c202ef0d6c8c97d2affcd05f529fee5&v=4" alt="Geraldo Vilela"></img>
+              <img src={dev.avatar_url} alt={dev.name}></img>
                 <div className="user-info">
-                  <strong>Geraldo Vilela</strong>
-                  <span>ReactJS, React Native, Node.js</span>
+                  <strong>{dev.name}</strong>
+                  <span>{dev.techs.join(', ')}</span>
 
                 </div>
               
             </header>
-              <p>atualmente estudante de S.I, focado em aprender a usar JS, Node.JS e React.</p>
-              <a href="https://github.com/geraldovilela">Acessar Perfil</a>
+              <p>{dev.bio}</p>
+              <a href={`https://github.com/${dev.github_username}`}>Acessar Perfil</a>
           </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/53988477?s=400&u=9e1140896c202ef0d6c8c97d2affcd05f529fee5&v=4" alt="Geraldo Vilela"></img>
-                <div className="user-info">
-                  <strong>Geraldo Vilela</strong>
-                  <span>ReactJS, React Native, Node.js</span>
-
-                </div>
-              
-            </header>
-              <p>atualmente estudante de S.I, focado em aprender a usar JS, Node.JS e React.</p>
-              <a href="https://github.com/geraldovilela">Acessar Perfil</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/53988477?s=400&u=9e1140896c202ef0d6c8c97d2affcd05f529fee5&v=4" alt="Geraldo Vilela"></img>
-                <div className="user-info">
-                  <strong>Geraldo Vilela</strong>
-                  <span>ReactJS, React Native, Node.js</span>
-
-                </div>
-              
-            </header>
-              <p>atualmente estudante de S.I, focado em aprender a usar JS, Node.JS e React.</p>
-              <a href="https://github.com/geraldovilela">Acessar Perfil</a>
-          </li>
-          <li className="dev-item">
-            <header>
-              <img src="https://avatars1.githubusercontent.com/u/53988477?s=400&u=9e1140896c202ef0d6c8c97d2affcd05f529fee5&v=4" alt="Geraldo Vilela"></img>
-                <div className="user-info">
-                  <strong>Geraldo Vilela</strong>
-                  <span>ReactJS, React Native, Node.js</span>
-
-                </div>
-              
-            </header>
-              <p>atualmente estudante de S.I, focado em aprender a usar JS, Node.JS e React.</p>
-              <a href="https://github.com/geraldovilela">Acessar Perfil</a>
-          </li>
+          ))}
+          
         </ul>
       </main>
     </div>
